@@ -85,9 +85,11 @@ def make_melon_type_lookup(melon_types):
     dictionary_melons = {}
 
     for melon in melon_types:
-        dictionary_melons[melon.code] = type(melon)
+        if melon.code not in dictionary_melons:
+            dictionary_melons[melon.code] = melon
 
-    print(dictionary_melons)
+    return dictionary_melons
+
 
 
 ############
@@ -102,11 +104,11 @@ class Melon:
     # Needs __init__ and is_sellable methods
 
     def __init__(
-        self, code, shape_rating, color_rating, harvested_from, harvested_by
+        self, melon_type, shape_rating, color_rating, harvested_from, harvested_by
     ):
         """Initialize a melon."""
 
-        self.code = code
+        self.melon_type = melon_type
 
         self.shape_rating = shape_rating
 
@@ -130,7 +132,7 @@ def make_melons(melon_types):
 
     all_melon_types = []
 
-    melons_by_id = make_melon_type_lookup(melon_types)
+    melons_by_id = make_melon_type_lookup(melon_types) # Not sure why they wanted us to do that
 
 
     melon_1= Melon(melons_by_id["yw"], 8, 7, 2, "Sheila")
@@ -170,6 +172,6 @@ def get_sellability_report(melons):
 
     for melon in melons:
         if melon.is_sellable() == True:
-            print(f"Harvested by {melon.harvested.by} from Field {melon.harvested_from} (CAN BE SOLD")
+            print(f"Harvested by {melon.harvested_by} from Field {melon.harvested_from} CAN BE SOLD")
         else:
-            print(f"Harvested by {melon.harvested.by} from Field {melon.harvested_from} (NOT SELLABLE")
+            print(f"Harvested by {melon.harvested_by} from Field {melon.harvested_from} NOT SELLABLE")
